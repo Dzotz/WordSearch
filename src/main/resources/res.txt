@@ -1,0 +1,4 @@
+can - 6
+I - 60
+visit - 2
+mist - 0
