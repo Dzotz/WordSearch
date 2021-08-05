@@ -1,4 +1,6 @@
 can - 6
+don - 0
 I - 60
+xxx - 0
 visit - 2
 mist - 0

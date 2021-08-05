@@ -4,12 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Main {
-
+    public static final List<String> symbolsBefore = Arrays.asList("\"", " ");
+    public static final List<String> symbolsAfter = Arrays.asList("\"", " ", ".", "'", ";");
     public static void main(String[] args) {
         File inputFile = new File("src/main/resources/input.txt");
         File readFile = new File("src/main/resources/article.txt");
@@ -25,13 +24,23 @@ public class Main {
                     resMap.putIfAbsent(word, 0);
                 }
                 List<String> fileLines = FileUtils.readLines(readFile, "utf-8");
+
                 for (String line: fileLines) {
                     if (!StringUtils.isAllEmpty(line)){
                         line = " " + line.toLowerCase(Locale.ROOT)+" ";
                         for (String word : words){
                             String lowerCaseWord = word.toLowerCase(Locale.ROOT);
-                            lowerCaseWord =" "+lowerCaseWord + " ";
-                            Integer wordMatches = StringUtils.countMatches(line, lowerCaseWord);
+                            List<String> possibleVariations = new ArrayList<>();
+                            for(String bs:symbolsBefore){
+                                for(String as:symbolsAfter){
+                                    possibleVariations.add(bs+lowerCaseWord+as);
+                                }
+                            }
+
+                            Integer wordMatches = 0;
+                            for(String variant : possibleVariations){
+                                wordMatches+=StringUtils.countMatches(line, variant);
+                            }
                             resMap.replace(word, resMap.get(word)+wordMatches);
                         }
                     }
